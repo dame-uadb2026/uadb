@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block titre %}Ajouter plusieurs documents — UADB Study Hub{% endblock %}
+
+{% block contenu %}
+<section class="conteneur section section--etroite">
+  <nav class="fil-ariane">
+    <a href="{{ url_for('admin_dashboard') }}">Espace admin</a> <span>/</span>
+    <span>Ajouter plusieurs documents</span>
+  </nav>
+
+  <h1 class="titre-page">Ajouter plusieurs documents d'un coup</h1>
+
+  <form method="post" class="formulaire carte-formulaire">
+    <label>
+      Matière (commune à tous les documents ci-dessous)
+      <select name="matiere_id" required>
+        <option value="">— Choisir une matière —</option>
+        {% for m in matieres %}
+          <option value="{{ m.id }}" {% if matiere_preselectionnee and matiere_preselectionnee == m.id %}selected{% endif %}>
+            {{ m.niveau_nom }} · {{ m.filiere_nom }} · {{ m.nom }}
+          </option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <label>
+      Type de document (commun à tous les documents ci-dessous)
+      <select name="type" required>
+        <option value="">— Choisir un type —</option>
+        {% for t in types_documents %}
+          <option value="{{ t }}">{{ t }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <label>
+      Liste des documents — un par ligne
+      <textarea name="lignes" rows="10" required
+        placeholder="TD 1 | https://drive.google.com/file/d/...&#10;TD 2 | https://drive.google.com/file/d/...&#10;TD 3 | https://drive.google.com/file/d/..."
+        style="font-family: var(--police-mono); font-size: 13px; padding: 10px 12px; border: 1px solid var(--bordure); border-radius: 8px; background: var(--fond); color: var(--ardoise);"></textarea>
+      <span class="label-aide">
+        Une ligne = un document. Format : <strong>Titre | lien Google Drive</strong> (séparés par une barre verticale « | »).
+        Si tu ne mets pas de titre, un titre automatique sera généré. Nombre de lignes valides = nombre de documents créés.
+      </span>
+    </label>
+
+    <button type="submit" class="bouton">Créer tous les documents</button>
+  </form>
+</section>
+{% endblock %}

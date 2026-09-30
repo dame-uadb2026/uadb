@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block titre %}Statistiques — UADB Study Hub{% endblock %}
+
+{% block contenu %}
+<section class="conteneur section">
+  <nav class="fil-ariane">
+    <a href="{{ url_for('admin_dashboard') }}">Espace admin</a> <span>/</span>
+    <span>Statistiques</span>
+  </nav>
+
+  <h1 class="titre-page">Statistiques de visites</h1>
+  <p class="section__legende">
+    Nombre de pages consultées par les étudiants (hors espace admin).
+  </p>
+
+  <div class="grille-stats-admin">
+    <div class="carte-stat-admin">
+      <span class="carte-stat-admin__valeur">{{ total_semaine }}</span>
+      <span class="carte-stat-admin__label">Cette semaine</span>
+    </div>
+    <div class="carte-stat-admin">
+      <span class="carte-stat-admin__valeur">{{ total_mois }}</span>
+      <span class="carte-stat-admin__label">Ce mois-ci</span>
+    </div>
+    <div class="carte-stat-admin">
+      <span class="carte-stat-admin__valeur">{{ total_annee }}</span>
+      <span class="carte-stat-admin__label">Cette année</span>
+    </div>
+    <div class="carte-stat-admin">
+      <span class="carte-stat-admin__valeur">{{ total_general }}</span>
+      <span class="carte-stat-admin__label">Depuis le début</span>
+    </div>
+  </div>
+
+  <h2 class="titre-semestre">Derniers jours</h2>
+  {% if derniers_jours %}
+    <table class="tableau-admin">
+      <thead><tr><th>Jour</th><th>Pages vues</th></tr></thead>
+      <tbody>
+        {% for j in derniers_jours %}
+          <tr><td>{{ j.jour }}</td><td>{{ j.total }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="etat-vide">Pas encore de visite enregistrée.</p>
+  {% endif %}
+
+  <h2 class="titre-semestre">Clics sur les documents</h2>
+  <p class="section__legende">
+    Nombre de fois où un document (PDF/lien Drive) a été ouvert par un étudiant.
+  </p>
+  <div class="grille-stats-admin">
+    <div class="carte-stat-admin">
+      <span class="carte-stat-admin__valeur">{{ clics_aujourdhui }}</span>
+      <span class="carte-stat-admin__label">Aujourd'hui</span>
+    </div>
+    <div class="carte-stat-admin">
+      <span class="carte-stat-admin__valeur">{{ clics_semaine }}</span>
+      <span class="carte-stat-admin__label">Cette semaine</span>
+    </div>
+  </div>
+
+  <h3 class="titre-semestre" style="font-size:16px;">Par filière</h3>
+  {% if clics_par_filiere %}
+    <div class="tableau-scroll">
+      <table class="tableau-admin">
+        <thead><tr><th>Filière</th><th>Clics</th></tr></thead>
+        <tbody>
+          {% for f in clics_par_filiere %}
+            <tr><td>{{ f.filiere_nom }}</td><td>{{ f.n }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="etat-vide">Pas encore de clic enregistré.</p>
+  {% endif %}
+
+  <h3 class="titre-semestre" style="font-size:16px;">Par matière (top 20)</h3>
+  {% if clics_par_matiere %}
+    <div class="tableau-scroll">
+      <table class="tableau-admin">
+        <thead><tr><th>Matière</th><th>Filière</th><th>Clics</th></tr></thead>
+        <tbody>
+          {% for m in clics_par_matiere %}
+            <tr><td>{{ m.matiere_nom }}</td><td>{{ m.filiere_nom }}</td><td>{{ m.n }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="etat-vide">Pas encore de clic enregistré.</p>
+  {% endif %}
+</section>
+{% endblock %}

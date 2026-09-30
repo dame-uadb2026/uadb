@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block titre %}Documents — {{ matiere.nom }} — UADB Study Hub{% endblock %}
+
+{% block contenu %}
+<section class="conteneur section">
+  <nav class="fil-ariane">
+    <a href="{{ url_for('admin_dashboard') }}">Espace admin</a> <span>/</span>
+    <span>{{ matiere.nom }}</span>
+  </nav>
+
+  <div class="section__entete section__entete--admin">
+    <div>
+      <h1 class="titre-page" style="margin-bottom:4px;">{{ matiere.nom }}</h1>
+      <p class="section__legende">{{ matiere.filiere_nom }} · {{ documents|length }} document{{ 's' if documents|length > 1 else '' }}</p>
+    </div>
+    <div class="actions-admin">
+      <a href="{{ url_for('admin_document_ajouter', matiere_id=matiere.id) }}" class="bouton bouton--accent">+ Document</a>
+      <a href="{{ url_for('admin_document_ajouter_plusieurs', matiere_id=matiere.id) }}" class="bouton">+ Plusieurs documents</a>
+    </div>
+  </div>
+
+  {% if documents %}
+    <div class="tableau-scroll">
+      <table class="tableau-admin">
+        <thead>
+          <tr>
+            <th>Titre</th>
+            <th>Type</th>
+            <th>Ajouté le</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for doc in documents %}
+            <tr>
+              <td>{{ doc.titre }}</td>
+              <td>{{ doc.type }}</td>
+              <td>{{ doc.date_ajout|date_fr }}</td>
+              <td class="tableau-admin__actions">
+                <a href="{{ url_for('admin_document_modifier', document_id=doc.id) }}" class="lien-action">Modifier</a>
+                <form method="post" action="{{ url_for('admin_document_supprimer', document_id=doc.id) }}"
+                      onsubmit="return confirm('Supprimer uniquement le document « {{ doc.titre }} » ?');" class="form-inline">
+                  <button type="submit" class="lien-action lien-action--danger">Supprimer</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="etat-vide">Aucun document pour l'instant dans cette matière.</p>
+  {% endif %}
+</section>
+{% endblock %}

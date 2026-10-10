@@ -8,6 +8,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/icone.svg') }}">
+  <meta property="og:title" content="UADB Study Hub">
+<meta property="og:description" content="Ressources pédagogiques pour les étudiants de l'Université Alioune Diop de Bambey.">
+<meta property="og:image" content="{{ url_for('static', filename='img/logo.png', _external=True) }}">
+<meta property="og:url" content="{{ url_for('accueil', _external=True) }}">
 </head>
 <body>
 
